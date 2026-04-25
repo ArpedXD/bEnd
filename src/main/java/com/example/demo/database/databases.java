@@ -6,6 +6,52 @@ import java.util.*;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+class databasestart {
+    private static HikariDataSource dataSource;
+
+    static {
+        try {
+            HikariConfig config = new HikariConfig();
+
+            // Get from environment variables (fallback to hardcoded for local testing)
+            String dbUrl = System.getenv("DB_URL");
+            String dbUser = System.getenv("DB_USER");
+            String dbPassword = System.getenv("DB_PASSWORD");
+
+            // Fallback to hardcoded if env vars not set (for local development)
+            if (dbUrl == null) {
+                dbUrl = "jdbc:mysql://shinkansen.proxy.rlwy.net:26454/railway";
+                dbUser = "root";
+                dbPassword = "rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE";
+            }
+
+            config.setJdbcUrl(dbUrl);
+            config.setUsername(dbUser);
+            config.setPassword(dbPassword);
+
+            // Connection pool settings
+            config.setMaximumPoolSize(10);
+            config.setMinimumIdle(2);
+            config.setConnectionTimeout(30000);
+            config.setIdleTimeout(600000);
+            config.setMaxLifetime(1800000);
+
+            dataSource = new HikariDataSource(config);
+
+            System.out.println("✅ Database connection pool initialized successfully");
+
+        } catch (Exception e) {
+            System.err.println("❌ Failed to initialize database: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Database initialization failed", e);
+        }
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
+    }
+}
+
 class games extends databasestart{
     public static void addWin(String username, String game) {
         String sql = "UPDATE user_stats us " +
