@@ -10,7 +10,7 @@ public class HealthController {
     
     @GetMapping("/health")
     public String health() {
-        try (Connection conn = databasestart.getConnection()) {
+        try (Connection conn = databasestarts.getConnection()) {
             return "OK - Database connected";
         } catch (Exception e) {
             return "ERROR: " + e.getMessage();
