@@ -11,54 +11,19 @@ class databasestart {
 
     static {
         try {
-            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            System.out.println("🔧 INITIALIZING DATABASE CONNECTION POOL");
-            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            
             HikariConfig config = new HikariConfig();
-            
-            String dbUrl = System.getenv("DB_URL");
-            String dbUser = System.getenv("DB_USER");
-            String dbPassword = System.getenv("DB_PASSWORD");
-            
-            System.out.println("Environment Variables Check:");
-            System.out.println("  DB_URL: " + (dbUrl != null ? "✓ SET" : "✗ NOT SET"));
-            System.out.println("  DB_USER: " + (dbUser != null ? "✓ SET" : "✗ NOT SET"));
-            System.out.println("  DB_PASSWORD: " + (dbPassword != null ? "✓ SET" : "✗ NOT SET"));
-            
-            System.out.println("Connection URL: " + dbUrl);
-            
-            config.setJdbcUrl(dbUrl);
-            config.setUsername(dbUser);
-            config.setPassword(dbPassword);
-            
+            config.setJdbcUrl("jdbc:mysql://mysql.railway.internal:3306/railway");
+            config.setUsername("root");
+            config.setPassword("rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE");
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
             config.setConnectionTimeout(30000);
             config.setIdleTimeout(600000);
             config.setMaxLifetime(1800000);
-            
-            System.out.println("Creating HikariCP DataSource...");
             dataSource = new HikariDataSource(config);
-            
-            System.out.println("Testing database connection...");
-            try (Connection testConn = dataSource.getConnection()) {
-                System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                System.out.println("✅ DATABASE CONNECTION SUCCESSFUL");
-                System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            }
-            
+            System.out.println("✅ DB connected");
         } catch (Exception e) {
-            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            System.err.println("❌ FATAL: DATABASE INITIALIZATION FAILED");
-            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            System.err.println("Error Type: " + e.getClass().getName());
-            System.err.println("Error Message: " + e.getMessage());
-            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             e.printStackTrace();
-            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            
-            // Re-throw to prevent app from starting with broken database
             throw new RuntimeException("Database initialization failed", e);
         }
     }
