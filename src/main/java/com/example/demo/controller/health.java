@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
 
 @RestController
-public class HealthController {
+public class health {
     
     @GetMapping("/health")
     public String health() {
