@@ -5,7 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class databasestart {  // ← Changed from "class" to "public class"
+public class databasestarts {  // ← Changed from "class" to "public class"
     private static HikariDataSource dataSource;
 
     static {
