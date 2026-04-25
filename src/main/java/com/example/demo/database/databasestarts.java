@@ -22,13 +22,6 @@ public class databasestarts {  // ← Changed from "class" to "public class"
             System.out.println("DB_USER from env: " + (dbUser != null ? "SET" : "NOT SET"));
             System.out.println("DB_PASSWORD from env: " + (dbPassword != null ? "SET" : "NOT SET"));
             
-            if (dbUrl == null) {
-                System.out.println("⚠️ Using hardcoded database credentials");
-                dbUrl = "jdbc:mysql://shinkansen.proxy.rlwy.net:26454/railway?allowPublicKeyRetrieval=true&useSSL=false&connectTimeout=30000";
-                dbUser = "root";
-                dbPassword = "rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE";
-            }
-            
             System.out.println("Connecting to: " + dbUrl);
             
             config.setJdbcUrl(dbUrl);
