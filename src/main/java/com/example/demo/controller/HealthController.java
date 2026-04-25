@@ -1,12 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.database.databasestart;
+import com.example.demo.database.databasestarts;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
 
 @RestController
-public class health {
+public class HealthController {
     
     @GetMapping("/health")
     public String health() {
