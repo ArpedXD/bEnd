@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 class databasestart{
-    private static final String URL = "jdbc:mysql://root:rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE@shinkansen.proxy.rlwy.net:26454/railway";
+    private static final String URL = "jdbc:mysql://shinkansen.proxy.rlwy.net:26454/railway";
     private static final String USER = "root";
     private static final String PASSWORD = "rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE";
 
