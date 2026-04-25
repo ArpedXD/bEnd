@@ -6,7 +6,7 @@ import java.util.*;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-class databasestart {
+public class databasestart {
     private static HikariDataSource dataSource;
 
     static {
