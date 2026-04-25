@@ -14,7 +14,7 @@ public class databasestarts {  // ← Changed from "class" to "public class"
             
             HikariConfig config = new HikariConfig();
             
-            String dbUrl = System.getenv("DB_URL");
+            String dbUrl = System.getenv("JDBC_URL");
             String dbUser = System.getenv("DB_USER");
             String dbPassword = System.getenv("DB_PASSWORD");
             
