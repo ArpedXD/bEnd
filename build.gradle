@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.zaxxer:HikariCP:5.0.1'
 	implementation files('lib/mysql-connector-j-9.6.0.jar')
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
