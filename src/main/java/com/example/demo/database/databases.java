@@ -6,48 +6,74 @@ import java.util.*;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-class databasestart {
+public class databasestart {
     private static HikariDataSource dataSource;
 
     static {
         try {
+            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            System.out.println("🔧 INITIALIZING DATABASE CONNECTION POOL");
+            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            
             HikariConfig config = new HikariConfig();
-
-            // Get from environment variables (fallback to hardcoded for local testing)
+            
             String dbUrl = System.getenv("DB_URL");
             String dbUser = System.getenv("DB_USER");
             String dbPassword = System.getenv("DB_PASSWORD");
-
-            // Fallback to hardcoded if env vars not set (for local development)
+            
+            System.out.println("Environment Variables Check:");
+            System.out.println("  DB_URL: " + (dbUrl != null ? "✓ SET" : "✗ NOT SET"));
+            System.out.println("  DB_USER: " + (dbUser != null ? "✓ SET" : "✗ NOT SET"));
+            System.out.println("  DB_PASSWORD: " + (dbPassword != null ? "✓ SET" : "✗ NOT SET"));
+            
             if (dbUrl == null) {
-                dbUrl = "jdbc:mysql://shinkansen.proxy.rlwy.net:26454/railway";
+                System.out.println("⚠️  Using hardcoded credentials (fallback)");
+                dbUrl = "jdbc:mysql://shinkansen.proxy.rlwy.net:26454/railway?allowPublicKeyRetrieval=true&useSSL=false&connectTimeout=30000";
                 dbUser = "root";
                 dbPassword = "rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE";
             }
-
+            
+            System.out.println("Connection URL: " + dbUrl);
+            
             config.setJdbcUrl(dbUrl);
             config.setUsername(dbUser);
             config.setPassword(dbPassword);
-
-            // Connection pool settings
+            
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
             config.setConnectionTimeout(30000);
             config.setIdleTimeout(600000);
             config.setMaxLifetime(1800000);
-
+            
+            System.out.println("Creating HikariCP DataSource...");
             dataSource = new HikariDataSource(config);
-
-            System.out.println("✅ Database connection pool initialized successfully");
-
+            
+            System.out.println("Testing database connection...");
+            try (Connection testConn = dataSource.getConnection()) {
+                System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                System.out.println("✅ DATABASE CONNECTION SUCCESSFUL");
+                System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            }
+            
         } catch (Exception e) {
-            System.err.println("❌ Failed to initialize database: " + e.getMessage());
+            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            System.err.println("❌ FATAL: DATABASE INITIALIZATION FAILED");
+            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            System.err.println("Error Type: " + e.getClass().getName());
+            System.err.println("Error Message: " + e.getMessage());
+            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             e.printStackTrace();
+            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            
+            // Re-throw to prevent app from starting with broken database
             throw new RuntimeException("Database initialization failed", e);
         }
     }
 
     public static Connection getConnection() throws SQLException {
+        if (dataSource == null) {
+            throw new SQLException("DataSource not initialized - check startup logs");
+        }
         return dataSource.getConnection();
     }
 }
