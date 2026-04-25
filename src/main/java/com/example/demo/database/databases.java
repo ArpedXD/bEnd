@@ -12,7 +12,7 @@ class databasestart {
     static {
         try {
             HikariConfig config = new HikariConfig();
-            config.setJdbcUrl("jdbc:mysql://mysql.railway.internal:3306/railway");
+            config.setJdbcUrl("jdbc:mysql://root:rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE@mysql.railway.internal:3306/railway");
             config.setUsername("root");
             config.setPassword("rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE");
             config.setMaximumPoolSize(10);
