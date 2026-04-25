@@ -53,12 +53,34 @@ public class base {
     }
 
     @GetMapping("/getEmail")
-    public String getEmail(@RequestParam String username) throws SQLException {
-        String userEmail = account.getEmailByUsername(username);
-        if (userEmail == null || userEmail.isEmpty()) {
-            return ""; // Return empty string instead of null
+    public String getEmail(@RequestParam String username) {
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        System.out.println("🔍 getEmail called");
+        System.out.println("Username: " + username);
+        
+        try {
+            System.out.println("📞 Calling account.getEmailByUsername...");
+            String userEmail = account.getEmailByUsername(username);
+            
+            System.out.println("✅ Query successful");
+            System.out.println("Email result: " + (userEmail == null ? "NULL" : userEmail));
+            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            
+            if (userEmail == null || userEmail.isEmpty()) {
+                return "";
+            }
+            return userEmail;
+            
+        } catch (SQLException e) {
+            System.err.println("❌ DATABASE ERROR in getEmail");
+            System.err.println("Error type: " + e.getClass().getName());
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            e.printStackTrace();
+            System.err.println("━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            
+            throw new RuntimeException("Database error: " + e.getMessage(), e);
         }
-        return userEmail;
     }
 
     // ── OTP ──────────────────────────────────────────────────────────────
