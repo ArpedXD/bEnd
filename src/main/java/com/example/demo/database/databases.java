@@ -26,13 +26,6 @@ public class databasestart {
             System.out.println("  DB_USER: " + (dbUser != null ? "✓ SET" : "✗ NOT SET"));
             System.out.println("  DB_PASSWORD: " + (dbPassword != null ? "✓ SET" : "✗ NOT SET"));
             
-            if (dbUrl == null) {
-                System.out.println("⚠️  Using hardcoded credentials (fallback)");
-                dbUrl = "jdbc:mysql://shinkansen.proxy.rlwy.net:26454/railway?allowPublicKeyRetrieval=true&useSSL=false&connectTimeout=30000";
-                dbUser = "root";
-                dbPassword = "rIwknsJBnTsIQhtOjIQfHUVaXdIMgQqE";
-            }
-            
             System.out.println("Connection URL: " + dbUrl);
             
             config.setJdbcUrl(dbUrl);
